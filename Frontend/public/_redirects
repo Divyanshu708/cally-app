@@ -1,0 +1,2 @@
+# SPA: serve index.html for all routes so /room/:id works on refresh and direct links.
+/*    /index.html   200
