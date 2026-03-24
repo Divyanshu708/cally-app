@@ -10,7 +10,8 @@ function getLocalNetworkIP() {
   return undefined;
 }
 
-const announcedIp = process.env.MEDIASOUP_ANNOUNCED_IP || getLocalNetworkIP();
+const announcedIp = process.env.MEDIASOUP_ANNOUNCED_IP;
+console.log("Using announced IP:", announcedIp);
 if (!announcedIp && process.env.NODE_ENV !== "production") {
   console.warn("MEDIASOUP_ANNOUNCED_IP not set. For mobile/PC video, set it to your machine's local IP (e.g. 192.168.1.x) in .env");
 }
@@ -23,8 +24,8 @@ module.exports = {
   workerSettings: {
     logLevel: "warn",
     logTags: ["info", "ice", "dtls", "rtp", "srtp", "rtcp"],
-    rtcMinPort: 10000,
-    rtcMaxPort: 59999,
+    rtcMinPort: 40000,
+    rtcMaxPort: 49999,
   },
   // Router settings
   routerOptions: {
@@ -55,10 +56,11 @@ module.exports = {
   // WebRTC transport options (announcedIp for clients behind NAT)
   webRtcTransportOptions: {
     listenIps: [
-      { ip: "0.0.0.0", announcedIp: announcedIp || undefined },
+      { ip: "0.0.0.0", announcedIp: announcedIp },
     ],
     enableUdp: true,
     enableTcp: true,
+    preferUdp: true,
     initialAvailableOutgoingBitrate: 1000000,
     minimumAvailableOutgoingBitrate: 600000,
     maxSctpMessageSize: 262144,
