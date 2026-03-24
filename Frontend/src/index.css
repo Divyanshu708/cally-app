@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+.hvrScl {
+  transition: transform 0.1s ease-in-out;
+  cursor: pointer;
+}
+
+.hvrScl:hover {
+  transform: scale(1.05);
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth rounded scrollbar */
+.scrollbar-rounded {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.4) rgba(255, 255, 255, 0.08);
+}
+.scrollbar-rounded::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollbar-rounded::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+}
+.scrollbar-rounded::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+}
+.scrollbar-rounded::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
