@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const roomRouter = require("./routes/roomRouter");
 const messageRouter = require("./routes/messageRouter");
@@ -11,7 +12,10 @@ const allowedOrigins = [
   "https://localhost:5173",
   "http://10.13.118.161:5173",
   "https://10.13.118.161:5173",
+  process.env.FRONTEND_URL,
 ];
+
+console.log(process.env.FRONTEND_URL);
 
 app.use(
   cors({
