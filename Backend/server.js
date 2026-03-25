@@ -63,7 +63,7 @@ const allowedOrigins = [
   "https://10.13.118.161:5173",
   process.env.FRONTEND_URL,
   "https://cally-app.netlify.app",
-];
+].filter(Boolean);
 
 const isAllowedOrigin = (origin) => {
   if (!origin) return true;
