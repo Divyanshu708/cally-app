@@ -127,6 +127,15 @@ class Room {
       paused: true,
     });
 
+    console.log("[consumer:create]", {
+      roomId: this.roomId,
+      socketId,
+      producerId,
+      consumerId: consumer.id,
+      kind: consumer.kind,
+      paused: consumer.paused,
+    });
+
     consumer.on("transportclose", () => {
       consumer.close();
     });
@@ -143,6 +152,15 @@ class Room {
     peer.consumers[producerSocketId][consumer.kind] = consumer;
 
     await consumer.resume();
+
+    console.log("[consumer:resume]", {
+      roomId: this.roomId,
+      socketId,
+      producerId,
+      consumerId: consumer.id,
+      kind: consumer.kind,
+      paused: consumer.paused,
+    });
 
     return {
       id: consumer.id,

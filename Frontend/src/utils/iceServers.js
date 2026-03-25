@@ -15,17 +15,21 @@ export function getClientIceServers() {
   try {
     const parsed = JSON.parse(raw);
 
-    if (Array.isArray(parsed) && parsed.length > 0) return [...DEFAULT_ICE_SERVERS, ...parsed];
+    if (Array.isArray(parsed) && parsed.length > 0)
+      return [...DEFAULT_ICE_SERVERS, ...parsed];
 
     if (parsed && typeof parsed === "object") {
       // Support { servers: [...] } shape if you ever want it.
       const servers = Array.isArray(parsed.servers) ? parsed.servers : null;
-      if (servers && servers.length > 0) return [...DEFAULT_ICE_SERVERS, ...servers];
+      if (servers && servers.length > 0)
+        return [...DEFAULT_ICE_SERVERS, ...servers];
     }
   } catch (e) {
-    console.warn("[ICE] VITE_ICE_SERVERS is not valid JSON. Using STUN only.", e);
+    console.warn(
+      "[ICE] VITE_ICE_SERVERS is not valid JSON. Using STUN only.",
+      e,
+    );
   }
 
   return DEFAULT_ICE_SERVERS;
 }
-

@@ -86,6 +86,25 @@ export function useMediasoup(roomId, displayName) {
               kind,
               rtpParameters,
             });
+            console.log("[Media] consumer created:", {
+              producerId,
+              consumerId: consumer?.id,
+              kind,
+              paused: consumer?.paused,
+            });
+
+            // Some environments keep the consumer paused unless explicitly resumed.
+            try {
+              await consumer.resume();
+              console.log("[Media] consumer resumed:", {
+                producerId,
+                consumerId: consumer?.id,
+                kind,
+                paused: consumer?.paused,
+              });
+            } catch (e) {
+              console.warn("[Media] consumer resume failed:", e?.message || e);
+            }
             if (mediaSessionRef.current !== sessionId) {
               consumer.close();
               resolve(null);
@@ -100,6 +119,14 @@ export function useMediasoup(roomId, displayName) {
               if (!next[producerSocketId]) next[producerSocketId] = { audio: null, video: null, displayName: remoteDisplayName };
               next[producerSocketId] = { ...next[producerSocketId], [kind]: consumer.track, displayName: remoteDisplayName };
               return next;
+            });
+
+            console.log("[Media] track attached to state:", {
+              producerSocketId,
+              producerId,
+              kind,
+              trackId: consumer?.track?.id,
+              trackReadyState: consumer?.track?.readyState,
             });
 
             consumer.on("transportclose", () => {
