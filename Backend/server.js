@@ -75,7 +75,13 @@ const isAllowedOrigin = (origin) => {
 
 const io = new Server(httpServer, {
   cors: {
-    origin: (origin, cb) => cb(null, isAllowedOrigin(origin)),
+    // origin: (origin, cb) => cb(null, isAllowedOrigin(origin)),
+    origin: (origin, cb) => {
+  if (!origin || isAllowedOrigin(origin)) {
+    return cb(null, true);
+  }
+  return cb(new Error("Not allowed by CORS"));
+},
     methods: ["GET", "POST"],
   },
 });
