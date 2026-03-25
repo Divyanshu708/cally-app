@@ -216,6 +216,7 @@ export function useMediasoup(roomId, displayName) {
             const transport = dev.createSendTransport({
               ...res.transportOptions,
               iceServers,
+              iceTransportPolicy: "relay",
             });
             transport.on("connect", async ({ dtlsParameters }, callback, errback) => {
               socket.emit("connectWebRtcTransport", { roomId, transportId: transport.id, dtlsParameters }, (cbRes) => {
@@ -278,6 +279,7 @@ export function useMediasoup(roomId, displayName) {
             const transport = dev.createRecvTransport({
               ...res.transportOptions,
               iceServers,
+              iceTransportPolicy: "relay",
             });
             transport.on("connect", async ({ dtlsParameters }, callback, errback) => {
               socket.emit("connectWebRtcTransport", { roomId, transportId: transport.id, dtlsParameters }, (cbRes) => {
