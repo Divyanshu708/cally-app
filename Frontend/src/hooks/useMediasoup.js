@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Device } from "mediasoup-client";
 import { socket } from "../services/socket";
+import { getClientIceServers } from "../utils/iceServers";
 
 export function useMediasoup(roomId, displayName) {
   const [localStream, setLocalStream] = useState(null);
@@ -134,6 +135,7 @@ export function useMediasoup(roomId, displayName) {
     mediaSessionRef.current += 1;
     const sessionId = mediaSessionRef.current;
     setRemoteTracks({});
+    const iceServers = getClientIceServers();
 
     let cancelled = false;
     let pollInterval;
@@ -184,7 +186,10 @@ export function useMediasoup(roomId, displayName) {
               reject(new Error(res.error));
               return;
             }
-            const transport = dev.createSendTransport(res.transportOptions);
+            const transport = dev.createSendTransport({
+              ...res.transportOptions,
+              iceServers,
+            });
             transport.on("connect", async ({ dtlsParameters }, callback, errback) => {
               socket.emit("connectWebRtcTransport", { roomId, transportId: transport.id, dtlsParameters }, (cbRes) => {
                 if (cbRes.error) errback(new Error(cbRes.error));
@@ -243,7 +248,10 @@ export function useMediasoup(roomId, displayName) {
               reject(new Error(res.error));
               return;
             }
-            const transport = dev.createRecvTransport(res.transportOptions);
+            const transport = dev.createRecvTransport({
+              ...res.transportOptions,
+              iceServers,
+            });
             transport.on("connect", async ({ dtlsParameters }, callback, errback) => {
               socket.emit("connectWebRtcTransport", { roomId, transportId: transport.id, dtlsParameters }, (cbRes) => {
                 if (cbRes.error) errback(new Error(cbRes.error));
